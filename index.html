@@ -87,8 +87,8 @@
             font-size: 14px;
         }
 
-        /* সাব্জেক্ট লিস্ট - শুরুতে দেখাবে না */
-        #subjectsSection {
+        /* সাব্জেক্ট ও চ্যাপ্টার লিস্ট - শুরুতে দেখাবে না */
+        #subjectsSection, #chaptersSection {
             display: none;
             animation: fadeIn 0.4s ease;
         }
@@ -173,7 +173,7 @@
         <p>অনলাইন পরীক্ষা পোর্টাল</p>
     </div>
 
-    <!-- মূন কন্টেন্ট -->
+    <!-- মূল কন্টেন্ট -->
     <div class="main-content">
         
         <!-- ক্লাস সিলেক্ট করার পেজ -->
@@ -221,10 +221,19 @@
 
         <!-- সাব্জেক্ট লিস্ট - ক্লাস সিলেক্ট করলে দেখাবে -->
         <div id="subjectsSection">
-            <div class="back-btn" onclick="goBack()">← ক্লাসে ফিরে যান</div>
+            <div class="back-btn" onclick="goBackToClasses()">← ক্লাসে ফিরে যান</div>
             <h2 class="section-title" id="classTitle">📖 সাব্জেক্ট নির্বাচন করুন</h2>
             <div class="subject-list" id="subjectList">
                 <!-- JavaScript দিয়ে সাব্জেক্ট যুক্ত হবে -->
+            </div>
+        </div>
+
+        <!-- চ্যাপ্টার লিস্ট - সাব্জেক্ট সিলেক্ট করলে দেখাবে -->
+        <div id="chaptersSection">
+            <div class="back-btn" id="backToSubjectsBtn">← সাব্জেক্টে ফিরে যান</div>
+            <h2 class="section-title" id="subjectTitle">📝 অধ্যায় নির্বাচন করুন</h2>
+            <div class="subject-list" id="chapterList">
+                <!-- JavaScript দিয়ে অধ্যায় যুক্ত হবে -->
             </div>
         </div>
 
@@ -236,18 +245,25 @@
     </div>
 
     <script>
-        // এখানে আপনার ক্লাস ও সাব্জেক্টের তথ্য এবং গুগুল ফর্ম লিংকগুলো যুক্ত করুন
+        // এখানে আপনার ক্লাস, সাব্জেক্ট ও অধ্যায়ের তথ্য এবং গুগুল ফর্ম লিংকগুলো যুক্ত করুন
         
+        // কমন অধ্যায়ের টেমপ্লেট (আপনি চাইলে প্রত্যেকটি সাবজেক্টের জন্য আলাদাভাবে কাস্টমাইজ করতে পারেন)
+        const defaultChapters = [
+            { name: 'অধ্যায় ১', link: '#' },
+            { name: 'অধ্যায় ২', link: '#' },
+            { name: 'অধ্যায় ৩', link: '#' }
+        ];
+
         var examData = {
             // ষষ্ঠ শ্রেণী
             'six': {
                 className: 'ষষ্ঠ শ্রেণী',
                 subjects: [
-                    { name: 'বাংলা', link: '#' },  // এখানে '#' এর জায়গায় গুগুল ফর্ম লিংক দিন
-                    { name: 'ইংরেজি', link: '#' },
-                    { name: 'গণিত', link: '#' },
-                    { name: 'বিজ্ঞান', link: '#' },
-                    { name: 'সামাজিক বিজ্ঞান', link: '#' }
+                    { name: 'বাংলা', chapters: defaultChapters }, 
+                    { name: 'ইংরেজি', chapters: defaultChapters },
+                    { name: 'গণিত', chapters: defaultChapters },
+                    { name: 'বিজ্ঞান', chapters: defaultChapters },
+                    { name: 'সামাজিক বিজ্ঞান', chapters: defaultChapters }
                 ]
             },
             
@@ -255,11 +271,11 @@
             'seven': {
                 className: 'সপ্তম শ্রেণী',
                 subjects: [
-                    { name: 'বাংলা', link: '#' },
-                    { name: 'ইংরেজি', link: '#' },
-                    { name: 'গণিত', link: '#' },
-                    { name: 'বিজ্ঞান', link: '#' },
-                    { name: 'সামাজিক বিজ্ঞান', link: '#' }
+                    { name: 'বাংলা', chapters: defaultChapters },
+                    { name: 'ইংরেজি', chapters: defaultChapters },
+                    { name: 'গণিত', chapters: defaultChapters },
+                    { name: 'বিজ্ঞান', chapters: defaultChapters },
+                    { name: 'সামাজিক বিজ্ঞান', chapters: defaultChapters }
                 ]
             },
             
@@ -267,11 +283,11 @@
             'eight': {
                 className: 'অষ্টম শ্রেণী',
                 subjects: [
-                    { name: 'বাংলা', link: '#' },
-                    { name: 'ইংরেজি', link: '#' },
-                    { name: 'গণিত', link: '#' },
-                    { name: 'বিজ্ঞান', link: '#' },
-                    { name: 'সামাজিক বিজ্ঞান', link: '#' }
+                    { name: 'বাংলা', chapters: defaultChapters },
+                    { name: 'ইংরেজি', chapters: defaultChapters },
+                    { name: 'গণিত', chapters: defaultChapters },
+                    { name: 'বিজ্ঞান', chapters: defaultChapters },
+                    { name: 'সামাজিক বিজ্ঞান', chapters: defaultChapters }
                 ]
             },
             
@@ -279,11 +295,11 @@
             'nine': {
                 className: 'নবম শ্রেণী',
                 subjects: [
-                    { name: 'বাংলা', link: '#' },
-                    { name: 'ইংরেজি', link: '#' },
-                    { name: 'গণিত', link: '#' },
-                    { name: 'বিজ্ঞান', link: '#' },
-                    { name: 'সামাজিক বিজ্ঞান', link: '#' }
+                    { name: 'বাংলা', chapters: defaultChapters },
+                    { name: 'ইংরেজি', chapters: defaultChapters },
+                    { name: 'গণিত', chapters: defaultChapters },
+                    { name: 'বিজ্ঞান', chapters: defaultChapters },
+                    { name: 'সামাজিক বিজ্ঞান', chapters: defaultChapters }
                 ]
             },
             
@@ -291,11 +307,11 @@
             'ten': {
                 className: 'দশম শ্রেণী',
                 subjects: [
-                    { name: 'বাংলা', link: '#' },
-                    { name: 'ইংরেজি', link: '#' },
-                    { name: 'গণিত', link: '#' },
-                    { name: 'বিজ্ঞান', link: '#' },
-                    { name: 'সামাজিক বিজ্ঞান', link: '#' }
+                    { name: 'বাংলা', chapters: defaultChapters },
+                    { name: 'ইংরেজি', chapters: defaultChapters },
+                    { name: 'গণিত', chapters: defaultChapters },
+                    { name: 'বিজ্ঞান', chapters: defaultChapters },
+                    { name: 'সামাজিক বিজ্ঞান', chapters: defaultChapters }
                 ]
             },
             
@@ -303,11 +319,11 @@
             'eleven': {
                 className: 'একাদশ শ্রেণী',
                 subjects: [
-                    { name: 'পদার্থবিজ্ঞান ১ম পত্র', link: '#' },
-                    { name: 'রসায়ন ১ম পত্র', link: '#' },
-                    { name: 'জীববিজ্ঞান ১ম পত্র', link: '#' },
-                    { name: 'গণিত ১ম পত্র', link: '#' },
-                    { name: 'ইংরেজি', link: '#' }
+                    { name: 'পদার্থবিজ্ঞান ১ম পত্র', chapters: defaultChapters },
+                    { name: 'রসায়ন ১ম পত্র', chapters: defaultChapters },
+                    { name: 'জীববিজ্ঞান ১ম পত্র', chapters: defaultChapters },
+                    { name: 'গণিত ১ম পত্র', chapters: defaultChapters },
+                    { name: 'ইংরেজি', chapters: defaultChapters }
                 ]
             },
             
@@ -315,11 +331,11 @@
             'twelve': {
                 className: 'দ্বাদশ শ্রেণী',
                 subjects: [
-                    { name: 'পদার্থবিজ্ঞান ২য় পত্র', link: '#' },
-                    { name: 'রসায়ন ২য় পত্র', link: '#' },
-                    { name: 'জীববিজ্ঞান ২য় পত্র', link: '#' },
-                    { name: 'গণিত ২য় পত্র', link: '#' },
-                    { name: 'ইংরেজি', link: '#' }
+                    { name: 'পদার্থবিজ্ঞান ২য় পত্র', chapters: defaultChapters },
+                    { name: 'রসায়ন ২য় পত্র', chapters: defaultChapters },
+                    { name: 'জীববিজ্ঞান ২য় পত্র', chapters: defaultChapters },
+                    { name: 'গণিত ২য় পত্র', chapters: defaultChapters },
+                    { name: 'ইংরেজি', chapters: defaultChapters }
                 ]
             }
         };
@@ -335,8 +351,9 @@
             
             // সাব্জেক্ট লিস্ট তৈরি করুন
             var html = '';
-            data.subjects.forEach(function(subject) {
-                html += '<div class="subject-item" onclick="openExam(\'' + subject.link + '\')">';
+            data.subjects.forEach(function(subject, index) {
+                // সাবজেক্টে ক্লিক করলে এবার showChapters ফাংশন কল হবে
+                html += '<div class="subject-item" onclick="showChapters(\'' + classId + '\', ' + index + ')">';
                 html += '<h4>' + subject.name + '</h4>';
                 html += '<span class="arrow">➜</span>';
                 html += '</div>';
@@ -347,15 +364,50 @@
             // সেকশন পরিবর্তন করুন
             document.getElementById('classesSection').style.display = 'none';
             document.getElementById('subjectsSection').style.display = 'block';
+            document.getElementById('chaptersSection').style.display = 'none';
         }
 
-        // ব্যাক বাটনে ক্লিক করলে ক্লাস লিস্টে ফিরবে
-        function goBack() {
+        // সাবজেক্ট সিলেক্ট করলে অধ্যায় দেখাবে
+        function showChapters(classId, subjectIndex) {
+            var subjectData = examData[classId].subjects[subjectIndex];
+            var chapterList = document.getElementById('chapterList');
+            var subjectTitle = document.getElementById('subjectTitle');
+            
+            // সাবজেক্টের নাম সেট করুন
+            subjectTitle.innerHTML = '📝 ' + subjectData.name + ' - অধ্যায় নির্বাচন করুন';
+            
+            // অধ্যায়ের লিস্ট তৈরি করুন
+            var html = '';
+            subjectData.chapters.forEach(function(chapter) {
+                html += '<div class="subject-item" onclick="openExam(\'' + chapter.link + '\')">';
+                html += '<h4>' + chapter.name + '</h4>';
+                html += '<span class="arrow">➜</span>';
+                html += '</div>';
+            });
+            
+            chapterList.innerHTML = html;
+
+            // ব্যাক বাটন আপডেট করুন যাতে সঠিক ক্লাসের সাবজেক্ট লিস্টে ফিরে যায়
+            document.getElementById('backToSubjectsBtn').setAttribute('onclick', 'goBackToSubjects(\'' + classId + '\')');
+            
+            // সেকশন পরিবর্তন করুন
+            document.getElementById('subjectsSection').style.display = 'none';
+            document.getElementById('chaptersSection').style.display = 'block';
+        }
+
+        // ক্লাস লিস্টে ফিরে যাওয়ার ফাংশন
+        function goBackToClasses() {
             document.getElementById('classesSection').style.display = 'block';
             document.getElementById('subjectsSection').style.display = 'none';
+            document.getElementById('chaptersSection').style.display = 'none';
         }
 
-        // সাব্জেক্টে ক্লিক করলে গুগুল ফর্ম লিংক খুলবে
+        // সাবজেক্ট লিস্টে ফিরে যাওয়ার ফাংশন
+        function goBackToSubjects(classId) {
+            showSubjects(classId); 
+        }
+
+        // অধ্যায়ে ক্লিক করলে গুগুল ফর্ম লিংক খুলবে
         function openExam(link) {
             if (link === '#') {
                 alert('এই পরীক্ষার লিংক এখনো যুক্ত করা হয়নি!');
